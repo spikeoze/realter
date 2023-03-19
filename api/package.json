@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "backend for realter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mukhtar",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.11.0",
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "joi": "^17.8.4",
+    "nodemon": "^2.0.21",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "prisma": "^4.11.0"
+  }
+}

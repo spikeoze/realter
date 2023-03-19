@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Agent {
+  id         Int        @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  username   String     @unique
+  email      String     @unique
+  phone      String
+  password   String
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  properties Property[] @relation("agentProperties")
+
+  @@map("agent")
+}
+
+enum PropertyPurpose {
+  FOR_RENT
+  FOR_SALE
+}
+
+model Property {
+  id           Int             @id @default(autoincrement())
+  type         String
+  purpose      PropertyPurpose
+  bedrooms     Int
+  bathrooms    Int
+  price        Float
+  description  String
+  address      String
+  city         String
+  state        String
+  yearBuilt    DateTime        @map("year_built") @db.Date()
+  squareMeters Float           @map("square_meters")
+  lotSize      Float           @map("lot_size")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  agent        Agent?          @relation("agentProperties", fields: [agentId], references: [id])
+  agentId      Int?
+  images       image[]         @relation("propertyImage")
+
+  @@map("property")
+}
+
+model image {
+  id         Int      @id @default(autoincrement())
+  image_name String?  @db.Text
+  image_type String?  @db.Text
+  image_data Bytes?   @db.ByteA
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  propertyId Int
+  property   Property @relation("propertyImage", fields: [propertyId], references: [id])
+
+  @@map("image")
+}
